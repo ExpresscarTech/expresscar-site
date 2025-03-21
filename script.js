@@ -1,5 +1,5 @@
 function novaOR() {
-  alert("Funcionalidade de criação de OR ainda será implementada!");
+    window.location.href = "nova_or.html"; // Sem barra extra
 }
 
 function verOrs() {
