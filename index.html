@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpressCar - Oficina</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>ExpressCar - Gestão de ORs</h1>
+        <nav>
+            <button onclick="novaOR()">+ Nova OR</button>
+            <button onclick="verOrs()">Ver ORs</button>
+            <button onclick="verMarcacoes()">Ver Marcações</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="ors">
+            <h2>📌 Ordens de Reparação Ativas</h2>
+            <table id="tabelaOrs">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Matrícula</th>
+                        <th>Cliente</th>
+                        <th>Intervenção</th>
+                        <th>Status</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Os dados das ORs serão carregados aqui -->
+                </tbody>
+            </table>
+        </section>
+
+        <section id="marcacoes">
+            <h2>📌 Marcações</h2>
+            <table id="tabelaMarcacoes">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Matrícula</th>
+                        <th>Cliente</th>
+                        <th>Serviço</th>
+                        <th>Status</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Os dados das marcações serão carregados aqui -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
