@@ -9,7 +9,7 @@ function verOrs() {
 function verMarcacoes() {
   alert("Aqui serão carregadas as marcações.");
 }
-document.getElementById("novaOrForm").addEventListener("submit", function(event) {
+document.getElementById("novaOrForm").addEventListener("submit", function (event) {
     event.preventDefault(); // Impede o recarregamento da página
 
     let matricula = document.getElementById("matricula").value.trim().toUpperCase();
@@ -20,6 +20,7 @@ document.getElementById("novaOrForm").addEventListener("submit", function(event)
     let contato = document.getElementById("contato").value.trim();
     let dataEntrega = document.getElementById("dataEntrega").value;
 
+    // Verificar campos obrigatórios
     if (!matricula || !km || !intervencao) {
         document.getElementById("mensagem").innerHTML = "⚠️ Preencha todos os campos obrigatórios!";
         return;
@@ -36,22 +37,24 @@ document.getElementById("novaOrForm").addEventListener("submit", function(event)
     };
 
     fetch("https://script.google.com/macros/s/AKfycbw0bYd31K9OluO3hfsAlBmi0rurJJvmaVk_6sCXA6G0KRSeEbD6giQcXi_seq_PfVd1/exec", {
-    method: "POST",
-    mode: "cors",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(dados)
-})
-
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById("mensagem").innerHTML = "✅ OR Criada com Sucesso!";
-        document.getElementById("novaOrForm").reset();
+        if (data.status === "sucesso") {
+            document.getElementById("mensagem").innerHTML = "✅ OR Criada com Sucesso!";
+            document.getElementById("novaOrForm").reset();
+        } else {
+            document.getElementById("mensagem").innerHTML = "❌ Erro ao criar OR!";
+        }
     })
     .catch(error => {
         console.error("Erro:", error);
-        document.getElementById("mensagem").innerHTML = "❌ Erro ao criar OR!";
+        document.getElementById("mensagem").innerHTML = "❌ Erro ao conectar ao servidor!";
     });
 });
