@@ -35,7 +35,7 @@ document.getElementById("novaOrForm").addEventListener("submit", function(event)
         dataEntrega: dataEntrega
     };
 
-    fetch("LINK_DO_SEU_WEB_APP_GOOGLE_SHEETS", {
+    fetch("https://script.google.com/macros/s/AKfycbyRBBdH47pEOByOMfADIComYHbxkd9iAg39aSzkTuxpxwVaRhFFo9pEmunoIABesDfd/exec", {
         method: "POST",
         mode: "cors",
         headers: {
