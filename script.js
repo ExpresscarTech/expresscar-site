@@ -9,3 +9,47 @@ function verOrs() {
 function verMarcacoes() {
   alert("Aqui serão carregadas as marcações.");
 }
+document.getElementById("novaOrForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Impede o recarregamento da página
+
+    let matricula = document.getElementById("matricula").value.trim().toUpperCase();
+    let km = document.getElementById("km").value.trim();
+    let intervencao = document.getElementById("intervencao").value.trim();
+    let revisao = document.getElementById("revisao").value;
+    let cliente = document.getElementById("cliente").value.trim();
+    let contato = document.getElementById("contato").value.trim();
+    let dataEntrega = document.getElementById("dataEntrega").value;
+
+    if (!matricula || !km || !intervencao) {
+        document.getElementById("mensagem").innerHTML = "⚠️ Preencha todos os campos obrigatórios!";
+        return;
+    }
+
+    let dados = {
+        matricula: matricula,
+        km: km,
+        intervencao: intervencao,
+        revisao: revisao,
+        cliente: cliente,
+        contato: contato,
+        dataEntrega: dataEntrega
+    };
+
+    fetch("LINK_DO_SEU_WEB_APP_GOOGLE_SHEETS", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("mensagem").innerHTML = "✅ OR Criada com Sucesso!";
+        document.getElementById("novaOrForm").reset();
+    })
+    .catch(error => {
+        console.error("Erro:", error);
+        document.getElementById("mensagem").innerHTML = "❌ Erro ao criar OR!";
+    });
+});
