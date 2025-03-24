@@ -54,3 +54,6 @@ document.getElementById("novaOrForm").addEventListener("submit", function (event
 });
 
 });
+function voltarInicio() {
+    window.location.href = "index.html"; // ou o nome correto da tua página principal
+}
