@@ -37,24 +37,20 @@ document.getElementById("novaOrForm").addEventListener("submit", function (event
     };
 
     fetch("https://script.google.com/macros/s/AKfycbziM0qQmmp-vR0pP82F08zlNfybzn4MR_HWewaehmzzjL3NZaCORMjBk3V11rAsO6w7/exec", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "sucesso") {
-            document.getElementById("mensagem").innerHTML = "✅ OR Criada com Sucesso!";
-            document.getElementById("novaOrForm").reset();
-        } else {
-            document.getElementById("mensagem").innerHTML = "❌ Erro ao criar OR!";
-        }
-    })
-    .catch(error => {
-        console.error("Erro:", error);
-        document.getElementById("mensagem").innerHTML = "❌ Erro ao conectar ao servidor!";
-    });
+  method: "POST",
+  mode: "no-cors", // <- ESSENCIAL
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(dados)
+})
+.then(() => {
+  document.getElementById("mensagem").innerHTML = "✅ OR Criada com Sucesso!";
+  document.getElementById("novaOrForm").reset();
+})
+.catch(error => {
+  console.error("Erro:", error);
+  document.getElementById("mensagem").innerHTML = "❌ Erro ao conectar ao servidor!";
+});
+
 });
