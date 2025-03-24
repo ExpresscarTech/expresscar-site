@@ -36,7 +36,7 @@ document.getElementById("novaOrForm").addEventListener("submit", function (event
         dataEntrega: dataEntrega
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbwHL0IYXLq9WtZpvFHDdXyqdBilQ11Sqs9C-kQ6lUAi6rqL4ut4HKqBZw4NcrEFFf4/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbziM0qQmmp-vR0pP82F08zlNfybzn4MR_HWewaehmzzjL3NZaCORMjBk3V11rAsO6w7/exec", {
         method: "POST",
         mode: "cors",
         headers: {
