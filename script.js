@@ -1,4 +1,3 @@
-
 function novaOR() {
     window.location.href = "nova_or.html";
 }
@@ -45,22 +44,24 @@ if (form) {
 }
 
 function verOrs() {
+    const tabela = document.querySelector("#tabelaOrs tbody");
+    if (!tabela) return;
+
     fetch("https://script.google.com/macros/s/AKfycbz4BAzq21EHEMVUenDBolgMuCMb90xevkZE090rLjM2gO465bfR2LIRAoCi6QCPwXpl/exec")
         .then(response => response.json())
         .then(data => {
-            const tabela = document.querySelector("#tabelaOrs tbody");
             tabela.innerHTML = "";
 
             data.forEach(or => {
-                let linha = document.createElement("tr");
+                const linha = document.createElement("tr");
 
                 linha.innerHTML = `
                     <td>${or.ID}</td>
-                    <td>${or.Matrícula}</td>
+                    <td>${or["Matrícula"]}</td>
                     <td>${or.Cliente || "-"}</td>
-                    <td>${or.Intervenção}</td>
+                    <td>${or["Intervenção"]}</td>
                     <td>Ativa</td>
-                    <td><button>🛠️</button></td>
+                    <td><button title="Abrir">🛠️</button></td>
                 `;
 
                 tabela.appendChild(linha);
