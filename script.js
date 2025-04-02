@@ -1,3 +1,4 @@
+
 function novaOR() {
     window.location.href = "nova_or.html";
 }
@@ -6,7 +7,6 @@ function voltarInicio() {
     window.location.href = "index.html";
 }
 
-// Fetch para criar nova OR
 const form = document.getElementById("novaOrForm");
 if (form) {
     form.addEventListener("submit", function (event) {
@@ -44,13 +44,12 @@ if (form) {
     });
 }
 
-// Função para buscar ORs e mostrar na tabela
 function verOrs() {
-    fetch("https://script.google.com/macros/s/AKfycbxutjTuhROjazfSFYFifY6zDY17n_j233sY1DxDjVDrb3R5tDdZiI29ayhquJfj5H_Y/exec")
+    fetch("https://script.google.com/macros/s/AKfycbz4BAzq21EHEMVUenDBolgMuCMb90xevkZE090rLjM2gO465bfR2LIRAoCi6QCPwXpl/exec")
         .then(response => response.json())
         .then(data => {
             const tabela = document.querySelector("#tabelaOrs tbody");
-            tabela.innerHTML = ""; // Limpa tabela
+            tabela.innerHTML = "";
 
             data.forEach(or => {
                 let linha = document.createElement("tr");
@@ -73,7 +72,6 @@ function verOrs() {
         });
 }
 
-// Botão de marcações (futuramente)
 function verMarcacoes() {
     alert("Aqui serão carregadas as marcações.");
 }
