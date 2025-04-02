@@ -27,7 +27,7 @@ if (form) {
             return;
         }
 
-        fetch("https://script.google.com/macros/s/AKfycbxutjTuhROjazfSFYFifY6zDY17n_j233sY1DxDjVDrb3R5tDdZiI29ayhquJfj5H_Y/exec", {
+        fetch("https://script.google.com/macros/s/AKfycbz4BAzq21EHEMVUenDBolgMuCMb90xevkZE090rLjM2gO465bfR2LIRAoCi6QCPwXpl/exec", {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "application/json" },
