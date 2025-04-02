@@ -1,55 +1,41 @@
 function novaOR() {
-    window.location.href = "nova_or.html"; // Sem barra extra
+    window.location.href = "nova_or.html";
 }
 
-function verOrs() {
-    alert("Aqui serão carregadas as ORs da base de dados.");
+function voltarInicio() {
+    window.location.href = "index.html";
 }
 
-function verMarcacoes() {
-    alert("Aqui serão carregadas as marcações.");
-}
-
-// Submeter nova OR
+// Fetch para criar nova OR
 const form = document.getElementById("novaOrForm");
 if (form) {
     form.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        let matricula = document.getElementById("matricula").value.trim().toUpperCase();
-        let km = document.getElementById("km").value.trim();
-        let intervencao = document.getElementById("intervencao").value.trim();
-        let revisao = document.getElementById("revisao").value;
-        let cliente = document.getElementById("cliente").value.trim();
-        let contato = document.getElementById("contato").value.trim();
-        let dataEntrega = document.getElementById("dataEntrega").value;
+        let dados = {
+            matricula: document.getElementById("matricula").value.trim().toUpperCase(),
+            km: document.getElementById("km").value.trim(),
+            intervencao: document.getElementById("intervencao").value.trim(),
+            revisao: document.getElementById("revisao").value,
+            cliente: document.getElementById("cliente").value.trim(),
+            contato: document.getElementById("contato").value.trim(),
+            dataEntrega: document.getElementById("dataEntrega").value
+        };
 
-        if (!matricula || !km || !intervencao) {
+        if (!dados.matricula || !dados.km || !dados.intervencao) {
             document.getElementById("mensagem").innerHTML = "⚠️ Preencha todos os campos obrigatórios!";
             return;
         }
 
-        let dados = {
-            matricula: matricula,
-            km: km,
-            intervencao: intervencao,
-            revisao: revisao,
-            cliente: cliente,
-            contato: contato,
-            dataEntrega: dataEntrega
-        };
-
         fetch("https://script.google.com/macros/s/AKfycbxutjTuhROjazfSFYFifY6zDY17n_j233sY1DxDjVDrb3R5tDdZiI29ayhquJfj5H_Y/exec", {
             method: "POST",
             mode: "no-cors",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dados)
         })
         .then(() => {
             document.getElementById("mensagem").innerHTML = "✅ OR Criada com Sucesso!";
-            document.getElementById("novaOrForm").reset();
+            form.reset();
         })
         .catch(error => {
             console.error("Erro:", error);
@@ -58,42 +44,36 @@ if (form) {
     });
 }
 
-// Botão voltar
-function voltarInicio() {
-    window.location.href = "index.html";
-}
-
-// Carregar ORs na página inicial
-function carregarORs() {
+// Função para buscar ORs e mostrar na tabela
+function verOrs() {
     fetch("https://script.google.com/macros/s/AKfycbxutjTuhROjazfSFYFifY6zDY17n_j233sY1DxDjVDrb3R5tDdZiI29ayhquJfj5H_Y/exec")
         .then(response => response.json())
         .then(data => {
             const tabela = document.querySelector("#tabelaOrs tbody");
-            if (!tabela) return;
+            tabela.innerHTML = ""; // Limpa tabela
 
-            tabela.innerHTML = "";
+            data.forEach(or => {
+                let linha = document.createElement("tr");
 
-            data.reverse().forEach(or => {
-                const linha = document.createElement("tr");
                 linha.innerHTML = `
-                    <td>${or.id || "-"}</td>
-                    <td>${or.matricula || "-"}</td>
-                    <td>${or.cliente || "-"}</td>
-                    <td>${or.intervencao || "-"}</td>
+                    <td>${or.ID}</td>
+                    <td>${or.Matrícula}</td>
+                    <td>${or.Cliente || "-"}</td>
+                    <td>${or.Intervenção}</td>
                     <td>Ativa</td>
-                    <td><button onclick="verDetalhes('${or.id || ""}')">🔍</button></td>
+                    <td><button>🛠️</button></td>
                 `;
+
                 tabela.appendChild(linha);
             });
         })
-        .catch(error => {
-            console.error("Erro ao carregar ORs:", error);
+        .catch(err => {
+            console.error("Erro ao buscar ORs:", err);
+            alert("Erro ao carregar ORs.");
         });
 }
 
-// Quando carregar a página, se existir tabela, preenche
-document.addEventListener("DOMContentLoaded", () => {
-    if (document.querySelector("#tabelaOrs")) {
-        carregarORs();
-    }
-});
+// Botão de marcações (futuramente)
+function verMarcacoes() {
+    alert("Aqui serão carregadas as marcações.");
+}
