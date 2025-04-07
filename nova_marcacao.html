@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nova Marcação - ExpressCar</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h2>Nova Marcação</h2>
+
+  <form id="novaMarcacaoForm">
+    <label for="matricula">Matrícula:</label>
+    <input type="text" id="matricula" name="matricula" required placeholder="Ex: 00-XX-00" />
+
+    <label for="cliente">Nome do Cliente (Opcional):</label>
+    <input type="text" id="cliente" name="cliente" placeholder="Nome do cliente" />
+
+    <label for="contato">Contato (Opcional):</label>
+    <input type="tel" id="contato" name="contato" placeholder="Ex: 912345678" />
+
+    <label for="servico">Serviço:</label>
+    <textarea id="servico" name="servico" required placeholder="Descreva o serviço a realizar"></textarea>
+
+    <label for="dataMarcacao">Data da Marcação:</label>
+    <input type="date" id="dataMarcacao" name="dataMarcacao" required />
+
+    <button type="submit">Agendar Marcação</button>
+    <button type="button" onclick="voltarInicio()">🔙 Voltar</button>
+  </form>
+
+  <p id="mensagem"></p>
+
+  <script src="script.js"></script>
+</body>
+</html>
