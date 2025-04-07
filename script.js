@@ -76,3 +76,10 @@ function verOrs() {
 function verMarcacoes() {
     alert("Aqui serão carregadas as marcações.");
 }
+
+// Carregar ORs automaticamente ao abrir a página
+window.addEventListener("DOMContentLoaded", function () {
+    if (document.querySelector("#tabelaOrs")) {
+        verOrs();
+    }
+});
