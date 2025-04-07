@@ -10,14 +10,13 @@ function voltarInicio() {
     window.location.href = "index.html";
 }
 
-// === NOVA OR ===
 const formOr = document.getElementById("novaOrForm");
 if (formOr) {
     formOr.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const dados = {
-            tipo: "OR", // importante para o script reconhecer
+        let dados = {
+            tipo: "OR",
             matricula: document.getElementById("matricula").value.trim().toUpperCase(),
             km: document.getElementById("km").value.trim(),
             intervencao: document.getElementById("intervencao").value.trim(),
@@ -32,7 +31,7 @@ if (formOr) {
             return;
         }
 
-        fetch("https://script.google.com/macros/s/AKfycbxMoPqX4CCkhsOfyfjoT1jvTexRInePn5eLCup6Q9Ia9DIycWCvTBMFwoq0c2mE24BB/exec", {
+        fetch("https://script.google.com/macros/s/AKfycbwH1T25sDhA_Jb6LecfmMeQZ4ssiPFgs1RKVyOrlshJ4NYKyk4kGNGa9esMx3WiK2al/exec", {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "application/json" },
@@ -49,14 +48,13 @@ if (formOr) {
     });
 }
 
-// === NOVA MARCAÇÃO ===
 const formMarcacao = document.getElementById("novaMarcacaoForm");
 if (formMarcacao) {
     formMarcacao.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const dados = {
-            tipo: "MARCACAO", // identifica o tipo no script
+        let dados = {
+            tipo: "MARCACAO",
             matricula: document.getElementById("matricula").value.trim().toUpperCase(),
             cliente: document.getElementById("cliente").value.trim(),
             contato: document.getElementById("contato").value.trim(),
@@ -65,18 +63,18 @@ if (formMarcacao) {
         };
 
         if (!dados.matricula || !dados.servico || !dados.dataMarcacao) {
-            document.getElementById("mensagem").innerHTML = "⚠️ Preencha os campos obrigatórios!";
+            document.getElementById("mensagem").innerHTML = "⚠️ Preencha todos os campos obrigatórios!";
             return;
         }
 
-        fetch("https://script.google.com/macros/s/AKfycbxMoPqX4CCkhsOfyfjoT1jvTexRInePn5eLCup6Q9Ia9DIycWCvTBMFwoq0c2mE24BB/exec", {
+        fetch("https://script.google.com/macros/s/AKfycbwH1T25sDhA_Jb6LecfmMeQZ4ssiPFgs1RKVyOrlshJ4NYKyk4kGNGa9esMx3WiK2al/exec", {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dados)
         })
         .then(() => {
-            document.getElementById("mensagem").innerHTML = "✅ Marcação Agendada com Sucesso!";
+            document.getElementById("mensagem").innerHTML = "✅ Marcação agendada com sucesso!";
             formMarcacao.reset();
         })
         .catch(error => {
@@ -86,17 +84,18 @@ if (formMarcacao) {
     });
 }
 
-// === LISTAR ORs ===
 function verOrs() {
-    fetch("https://script.google.com/macros/s/AKfycbxMoPqX4CCkhsOfyfjoT1jvTexRInePn5eLCup6Q9Ia9DIycWCvTBMFwoq0c2mE24BB/exec")
+    fetch("https://script.google.com/macros/s/AKfycbwH1T25sDhA_Jb6LecfmMeQZ4ssiPFgs1RKVyOrlshJ4NYKyk4kGNGa9esMx3WiK2al/exec")
         .then(response => response.json())
         .then(data => {
             const tabela = document.querySelector("#tabelaOrs tbody");
+            if (!tabela) return;
             tabela.innerHTML = "";
 
             data.forEach(or => {
-                let linha = document.createElement("tr");
+                if (!or.ID || or.ID.startsWith("M")) return;
 
+                let linha = document.createElement("tr");
                 linha.innerHTML = `
                     <td>${or.ID}</td>
                     <td>${or.Matrícula}</td>
@@ -105,7 +104,6 @@ function verOrs() {
                     <td>${or.Estado || "Ativa"}</td>
                     <td><button>🛠️</button></td>
                 `;
-
                 tabela.appendChild(linha);
             });
         })
@@ -113,8 +111,4 @@ function verOrs() {
             console.error("Erro ao buscar ORs:", err);
             alert("Erro ao carregar ORs.");
         });
-}
-
-function verMarcacoes() {
-    alert("As marcações são visíveis diretamente na página inicial.");
 }
