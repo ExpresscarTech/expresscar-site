@@ -2,6 +2,10 @@ function novaOR() {
     window.location.href = "nova_or.html";
 }
 
+function novaMarcacao() {
+    window.location.href = "nova_marcacao.html";
+}
+
 function voltarInicio() {
     window.location.href = "index.html";
 }
@@ -13,15 +17,15 @@ if (form) {
 
         let dados = {
             matricula: document.getElementById("matricula").value.trim().toUpperCase(),
-            km: document.getElementById("km").value.trim(),
+            km: document.getElementById("km") ? document.getElementById("km").value.trim() : "",
             intervencao: document.getElementById("intervencao").value.trim(),
-            revisao: document.getElementById("revisao").value,
+            revisao: document.getElementById("revisao") ? document.getElementById("revisao").value : "Não",
             cliente: document.getElementById("cliente").value.trim(),
             contato: document.getElementById("contato").value.trim(),
-            dataEntrega: document.getElementById("dataEntrega").value
+            dataEntrega: document.getElementById("dataEntrega")?.value || document.getElementById("dataMarcacao")?.value || ""
         };
 
-        if (!dados.matricula || !dados.km || !dados.intervencao) {
+        if (!dados.matricula || !dados.intervencao || (document.getElementById("km") && !dados.km)) {
             document.getElementById("mensagem").innerHTML = "⚠️ Preencha todos os campos obrigatórios!";
             return;
         }
@@ -33,7 +37,7 @@ if (form) {
             body: JSON.stringify(dados)
         })
         .then(() => {
-            document.getElementById("mensagem").innerHTML = "✅ OR Criada com Sucesso!";
+            document.getElementById("mensagem").innerHTML = "✅ Enviado com sucesso!";
             form.reset();
         })
         .catch(error => {
@@ -44,42 +48,34 @@ if (form) {
 }
 
 function verOrs() {
-    const tabela = document.querySelector("#tabelaOrs tbody");
-    if (!tabela) return;
-
-    fetch("https://script.google.com/macros/s/AKfycbz4BAzq21EHEMVUenDBolgMuCMb90xevkZE090rLjM2gO465bfR2LIRAoCi6QCPwXpl/exec")
-        .then(response => response.json())
-        .then(data => {
-            tabela.innerHTML = "";
-
-            data.forEach(or => {
-                const linha = document.createElement("tr");
-
-                linha.innerHTML = `
-                    <td>${or.ID}</td>
-                    <td>${or.Matrícula}</td>
-                    <td>${or.Cliente || "-"}</td>
-                    <td>${or.Intervenção}</td>
-                    <td>${or.Estado || "CHEGADA"}</td>
-                    <td><button title="Abrir">🛠️</button></td>
-                `;
-
-                tabela.appendChild(linha);
-            });
-        })
-        .catch(err => {
-            console.error("Erro ao buscar ORs:", err);
-            alert("Erro ao carregar ORs.");
-        });
+    // Quando implementarmos nova página, redireciona:
+    window.location.href = "ver_ors.html";
 }
 
-function verMarcacoes() {
-    alert("Aqui serão carregadas as marcações.");
-}
-
-// ⚡ Carrega automaticamente as ORs ao abrir a página
 document.addEventListener("DOMContentLoaded", () => {
     if (document.querySelector("#tabelaOrs")) {
-        verOrs();
+        fetch("https://script.google.com/macros/s/AKfycbz4BAzq21EHEMVUenDBolgMuCMb90xevkZE090rLjM2gO465bfR2LIRAoCi6QCPwXpl/exec")
+            .then(response => response.json())
+            .then(data => {
+                const tabela = document.querySelector("#tabelaOrs tbody");
+                tabela.innerHTML = "";
+
+                data.forEach(or => {
+                    const linha = document.createElement("tr");
+                    linha.innerHTML = `
+                        <td>${or.ID}</td>
+                        <td>${or.Matrícula}</td>
+                        <td>${or.Cliente || "-"}</td>
+                        <td>${or.Intervenção}</td>
+                        <td>${or.Estado || "CHEGADA"}</td>
+                        <td><button title="Abrir">🛠️</button></td>
+                    `;
+                    tabela.appendChild(linha);
+                });
+            })
+            .catch(err => {
+                console.error("Erro ao buscar ORs:", err);
+                alert("Erro ao carregar ORs.");
+            });
     }
 });
