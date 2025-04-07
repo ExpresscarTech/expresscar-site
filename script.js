@@ -57,10 +57,10 @@ function verOrs() {
 
                 linha.innerHTML = `
                     <td>${or.ID}</td>
-                    <td>${or["Matrícula"]}</td>
+                    <td>${or.Matrícula}</td>
                     <td>${or.Cliente || "-"}</td>
-                    <td>${or["Intervenção"]}</td>
-                    <td>Ativa</td>
+                    <td>${or.Intervenção}</td>
+                    <td>${or.Estado || "CHEGADA"}</td>
                     <td><button title="Abrir">🛠️</button></td>
                 `;
 
@@ -76,10 +76,3 @@ function verOrs() {
 function verMarcacoes() {
     alert("Aqui serão carregadas as marcações.");
 }
-
-// Carregar ORs automaticamente ao abrir a página
-window.addEventListener("DOMContentLoaded", function () {
-    if (document.querySelector("#tabelaOrs")) {
-        verOrs();
-    }
-});
