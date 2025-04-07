@@ -10,15 +10,14 @@ function voltarInicio() {
     window.location.href = "index.html";
 }
 
-const formOR = document.getElementById("novaOrForm");
-const formMarcacao = document.getElementById("novaMarcacaoForm");
-
-if (formOR) {
-    formOR.addEventListener("submit", function (event) {
+// === NOVA OR ===
+const formOr = document.getElementById("novaOrForm");
+if (formOr) {
+    formOr.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        let dados = {
-            tipo: "OR",
+        const dados = {
+            tipo: "OR", // importante para o script reconhecer
             matricula: document.getElementById("matricula").value.trim().toUpperCase(),
             km: document.getElementById("km").value.trim(),
             intervencao: document.getElementById("intervencao").value.trim(),
@@ -35,12 +34,13 @@ if (formOR) {
 
         fetch("https://script.google.com/macros/s/AKfycbxMoPqX4CCkhsOfyfjoT1jvTexRInePn5eLCup6Q9Ia9DIycWCvTBMFwoq0c2mE24BB/exec", {
             method: "POST",
+            mode: "no-cors",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dados)
         })
         .then(() => {
             document.getElementById("mensagem").innerHTML = "✅ OR Criada com Sucesso!";
-            formOR.reset();
+            formOr.reset();
         })
         .catch(error => {
             console.error("Erro:", error);
@@ -49,12 +49,14 @@ if (formOR) {
     });
 }
 
+// === NOVA MARCAÇÃO ===
+const formMarcacao = document.getElementById("novaMarcacaoForm");
 if (formMarcacao) {
     formMarcacao.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        let dados = {
-            tipo: "MARCACAO",
+        const dados = {
+            tipo: "MARCACAO", // identifica o tipo no script
             matricula: document.getElementById("matricula").value.trim().toUpperCase(),
             cliente: document.getElementById("cliente").value.trim(),
             contato: document.getElementById("contato").value.trim(),
@@ -63,17 +65,18 @@ if (formMarcacao) {
         };
 
         if (!dados.matricula || !dados.servico || !dados.dataMarcacao) {
-            document.getElementById("mensagem").innerHTML = "⚠️ Preencha todos os campos obrigatórios!";
+            document.getElementById("mensagem").innerHTML = "⚠️ Preencha os campos obrigatórios!";
             return;
         }
 
         fetch("https://script.google.com/macros/s/AKfycbxMoPqX4CCkhsOfyfjoT1jvTexRInePn5eLCup6Q9Ia9DIycWCvTBMFwoq0c2mE24BB/exec", {
             method: "POST",
+            mode: "no-cors",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dados)
         })
         .then(() => {
-            document.getElementById("mensagem").innerHTML = "✅ Marcação criada com sucesso!";
+            document.getElementById("mensagem").innerHTML = "✅ Marcação Agendada com Sucesso!";
             formMarcacao.reset();
         })
         .catch(error => {
@@ -83,34 +86,35 @@ if (formMarcacao) {
     });
 }
 
+// === LISTAR ORs ===
 function verOrs() {
-    window.location.href = "ver_ors.html";
+    fetch("https://script.google.com/macros/s/AKfycbxMoPqX4CCkhsOfyfjoT1jvTexRInePn5eLCup6Q9Ia9DIycWCvTBMFwoq0c2mE24BB/exec")
+        .then(response => response.json())
+        .then(data => {
+            const tabela = document.querySelector("#tabelaOrs tbody");
+            tabela.innerHTML = "";
+
+            data.forEach(or => {
+                let linha = document.createElement("tr");
+
+                linha.innerHTML = `
+                    <td>${or.ID}</td>
+                    <td>${or.Matrícula}</td>
+                    <td>${or.Cliente || "-"}</td>
+                    <td>${or.Intervenção}</td>
+                    <td>${or.Estado || "Ativa"}</td>
+                    <td><button>🛠️</button></td>
+                `;
+
+                tabela.appendChild(linha);
+            });
+        })
+        .catch(err => {
+            console.error("Erro ao buscar ORs:", err);
+            alert("Erro ao carregar ORs.");
+        });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    if (document.querySelector("#tabelaOrs")) {
-        fetch("https://script.google.com/macros/s/AKfycbxMoPqX4CCkhsOfyfjoT1jvTexRInePn5eLCup6Q9Ia9DIycWCvTBMFwoq0c2mE24BB/exec")
-            .then(response => response.json())
-            .then(data => {
-                const tabela = document.querySelector("#tabelaOrs tbody");
-                tabela.innerHTML = "";
-
-                data.forEach(or => {
-                    const linha = document.createElement("tr");
-                    linha.innerHTML = `
-                        <td>${or.ID}</td>
-                        <td>${or.Matrícula}</td>
-                        <td>${or.Cliente || "-"}</td>
-                        <td>${or.Intervenção}</td>
-                        <td>${or.Estado || "CHEGADA"}</td>
-                        <td><button title="Abrir">🛠️</button></td>
-                    `;
-                    tabela.appendChild(linha);
-                });
-            })
-            .catch(err => {
-                console.error("Erro ao buscar ORs:", err);
-                alert("Erro ao carregar ORs.");
-            });
-    }
-});
+function verMarcacoes() {
+    alert("As marcações são visíveis diretamente na página inicial.");
+}
